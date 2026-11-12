@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SlideShow index{% endblock %}
+
+{% block body %}
+    <h1>SlideShow index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for slide_show in slide_shows %}
+            <tr>
+                <td>{{ slide_show.id }}</td>
+                <td>{{ slide_show.title }}</td>
+                <td>
+                    <a href="{{ path('app_slide_show_show', {'id': slide_show.id}) }}">show</a>
+                    <a href="{{ path('app_slide_show_edit', {'id': slide_show.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_slide_show_new') }}">Create new</a>
+{% endblock %}
