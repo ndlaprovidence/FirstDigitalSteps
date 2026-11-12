@@ -28,9 +28,23 @@ class Image
     #[ORM\JoinColumn(nullable: false)]
     private ?Credit $credit = null;
 
+    /**
+     * @var Collection<int, SlideShow>
+     */
+    #[ORM\ManyToMany(targetEntity: SlideShow::class, mappedBy: 'Image')]
+    private Collection $slideShows;
+
+    /**
+     * @var Collection<int, Slide>
+     */
+    #[ORM\ManyToMany(targetEntity: Slide::class, mappedBy: 'Image')]
+    private Collection $slides;
+
     public function __construct()
     {
         $this->Question = new ArrayCollection();
+        $this->slideShows = new ArrayCollection();
+        $this->slides = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,6 +96,60 @@ class Image
     public function setCredit(?Credit $credit): static
     {
         $this->credit = $credit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SlideShow>
+     */
+    public function getSlideShows(): Collection
+    {
+        return $this->slideShows;
+    }
+
+    public function addSlideShow(SlideShow $slideShow): static
+    {
+        if (!$this->slideShows->contains($slideShow)) {
+            $this->slideShows->add($slideShow);
+            $slideShow->addImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSlideShow(SlideShow $slideShow): static
+    {
+        if ($this->slideShows->removeElement($slideShow)) {
+            $slideShow->removeImage($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Slide>
+     */
+    public function getSlides(): Collection
+    {
+        return $this->slides;
+    }
+
+    public function addSlide(Slide $slide): static
+    {
+        if (!$this->slides->contains($slide)) {
+            $this->slides->add($slide);
+            $slide->addImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSlide(Slide $slide): static
+    {
+        if ($this->slides->removeElement($slide)) {
+            $slide->removeImage($this);
+        }
 
         return $this;
     }
