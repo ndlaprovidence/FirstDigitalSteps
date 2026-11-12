@@ -37,10 +37,17 @@ class Question
     #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question')]
     private Collection $answers;
 
+    /**
+     * @var Collection<int, Image>
+     */
+    #[ORM\ManyToMany(targetEntity: Image::class, mappedBy: 'Question')]
+    private Collection $images;
+
 
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +134,33 @@ class Question
             if ($answer->getQuestion() === $this) {
                 $answer->setQuestion(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->addQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            $image->removeQuestion($this);
         }
 
         return $this;
