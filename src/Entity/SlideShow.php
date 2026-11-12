@@ -3,7 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SlideShowRepository;
-use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SlideShowRepository::class)]
@@ -14,53 +15,109 @@ class SlideShow
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Text = null;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
-    #[ORM\Column]
-    private ?int $ordre = null;
+    /**
+     * @var Collection<int, Image>
+     */
+    #[ORM\ManyToMany(targetEntity: Image::class, inversedBy: 'slideShows')]
+    private Collection $Image;
 
     #[ORM\ManyToOne(inversedBy: 'slideShows')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Theme $theme = null;
+    private ?Theme $Theme = null;
+
+    /**
+     * @var Collection<int, Slide>
+     */
+    #[ORM\OneToMany(targetEntity: Slide::class, mappedBy: 'SlideShow')]
+    private Collection $slides;
+
+    public function __construct()
+    {
+        $this->Image = new ArrayCollection();
+        $this->slides = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getText(): ?string
+    public function getTitle(): ?string
     {
-        return $this->Text;
+        return $this->title;
     }
 
-    public function setText(string $Text): static
+    public function setTitle(string $title): static
     {
-        $this->Text = $Text;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getOrdre(): ?int
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImage(): Collection
     {
-        return $this->ordre;
+        return $this->Image;
     }
 
-    public function setOrdre(int $ordre): static
+    public function addImage(Image $image): static
     {
-        $this->ordre = $ordre;
+        if (!$this->Image->contains($image)) {
+            $this->Image->add($image);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        $this->Image->removeElement($image);
 
         return $this;
     }
 
     public function getTheme(): ?Theme
     {
-        return $this->theme;
+        return $this->Theme;
     }
 
-    public function setTheme(?Theme $theme): static
+    public function setTheme(?Theme $Theme): static
     {
-        $this->theme = $theme;
+        $this->Theme = $Theme;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Slide>
+     */
+    public function getSlides(): Collection
+    {
+        return $this->slides;
+    }
+
+    public function addSlide(Slide $slide): static
+    {
+        if (!$this->slides->contains($slide)) {
+            $this->slides->add($slide);
+            $slide->setSlideShow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSlide(Slide $slide): static
+    {
+        if ($this->slides->removeElement($slide)) {
+            // set the owning side to null (unless already changed)
+            if ($slide->getSlideShow() === $this) {
+                $slide->setSlideShow(null);
+            }
+        }
 
         return $this;
     }

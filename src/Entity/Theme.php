@@ -28,8 +28,10 @@ class Theme
     /**
      * @var Collection<int, SlideShow>
      */
-    #[ORM\OneToMany(targetEntity: SlideShow::class, mappedBy: 'theme', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: SlideShow::class, mappedBy: 'Theme')]
     private Collection $slideShows;
+
+
 
     public function __construct()
     {
