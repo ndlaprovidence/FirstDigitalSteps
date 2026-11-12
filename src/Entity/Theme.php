@@ -25,16 +25,9 @@ class Theme
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'theme', orphanRemoval: true)]
     private Collection $questions;
 
-    /**
-     * @var Collection<int, SlideShow>
-     */
-    #[ORM\OneToMany(targetEntity: SlideShow::class, mappedBy: 'theme', orphanRemoval: true)]
-    private Collection $slideShows;
-
     public function __construct()
     {
         $this->questions = new ArrayCollection();
-        $this->slideShows = new ArrayCollection();
     }
 
 
@@ -85,34 +78,5 @@ class Theme
         return $this;
     }
 
-    /**
-     * @return Collection<int, SlideShow>
-     */
-    public function getSlideShows(): Collection
-    {
-        return $this->slideShows;
-    }
-
-    public function addSlideShow(SlideShow $slideShow): static
-    {
-        if (!$this->slideShows->contains($slideShow)) {
-            $this->slideShows->add($slideShow);
-            $slideShow->setTheme($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSlideShow(SlideShow $slideShow): static
-    {
-        if ($this->slideShows->removeElement($slideShow)) {
-            // set the owning side to null (unless already changed)
-            if ($slideShow->getTheme() === $this) {
-                $slideShow->setTheme(null);
-            }
-        }
-
-        return $this;
-    }
 
 }
