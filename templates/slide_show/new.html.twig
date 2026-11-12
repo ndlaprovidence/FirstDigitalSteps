@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SlideShow{% endblock %}
+
+{% block body %}
+    <h1>Create new SlideShow</h1>
+
+    {{ include('slide_show/_form.html.twig') }}
+
+    <a href="{{ path('app_slide_show_index') }}">back to list</a>
+{% endblock %}

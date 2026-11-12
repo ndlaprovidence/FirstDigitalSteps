@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SlideShow{% endblock %}
+
+{% block body %}
+    <h1>SlideShow</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ slide_show.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ slide_show.title }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_slide_show_index') }}">back to list</a>
+
+    <a href="{{ path('app_slide_show_edit', {'id': slide_show.id}) }}">edit</a>
+
+    {{ include('slide_show/_delete_form.html.twig') }}
+{% endblock %}
