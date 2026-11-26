@@ -20,7 +20,7 @@
         {% endif %}
     </head>
     <body class="bg-white">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top z-3">
+        <nav id="main-navbar" data-turbo="false" class="navbar navbar-expand-lg bg-body-tertiary sticky-top z-3">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ path('app_index') }}">{{'FirstDigitalSteps'|trans}}</a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -31,24 +31,28 @@
                                 {{'Administration'|trans}}
                             </a>
                             <ul class="dropdown-menu">
-                                {# <li><a class="dropdown-item" href="#">Another action</a></li> #}
-                                {# {% if is_granted('ROLE_SUPER_ADMIN') %} #}
                                 <li><hr class="dropdown-divider"></li>
-                                {# <li><a class="dropdown-item" href="{{ path('app_slideshow_index') }}">{{'slideshow'|trans}}</a></li> #}
                                 <li><a class="dropdown-item" href="{{ path('app_theme_index') }}">{{'theme'|trans}}</a></li>
                                 <li><a class="dropdown-item" href="{{ path('app_question_index') }}">{{'Question'|trans}}</a></li>
                                 <li><a class="dropdown-item" href="{{ path('app_answer_index') }}">{{'Answer'|trans}}</a></li>
-                                {# {% endif %} #}
                             </ul>
                         </li>
-                        {# {% endif %} #}
+                        <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/start">Jouer</a>
+                    </li>
                     </ul>
+
+                    {% set playerPseudo = app.session.get('player_pseudo') %}
+                    {% if playerPseudo %}
+                        <span class="badge text-bg-primary ms-lg-auto">Joueur : {{ playerPseudo }}</span>
+                    {% endif %}
+
                 </div>
+
             </div>
         </nav>
         <div class="px-5 py-2">
             {% block body %}{% endblock %}
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     </body>
 </html>

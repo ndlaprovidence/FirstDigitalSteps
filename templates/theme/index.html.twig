@@ -3,7 +3,12 @@
 {% block title %}Theme index{% endblock %}
 
 {% block body %}
-    <h1>Theme index</h1>
+    <h1>Choisissez un thème</h1>
+
+    {% set playerPseudo = app.session.get('player_pseudo') %}
+    {% if playerPseudo %}
+        <p>Connecté en tant que <strong>{{ playerPseudo }}</strong></p>
+    {% endif %}
 
     <table class="table">
         <thead>
