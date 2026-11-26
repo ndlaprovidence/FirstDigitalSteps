@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'FirstDigitalSteps'|trans}}{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper {max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Choisissez un pseudo</h1>
+
+    <form method="post" action="{{ path('app_start') }}" class="mt-3">
+        <div class="mb-3">
+            <input
+                type="text"
+                id="pseudo"
+                name="pseudo"
+                class="form-control"
+                placeholder="Entrez votre pseudo"
+                maxlength="50"
+                required
+            >
+        </div>
+        <button type="submit" class="btn btn-primary">Valider</button>
+    </form>
+</div>
+{% endblock %}
